@@ -71,7 +71,7 @@ object WidgetRenderer {
 
         // ---- שורה 3: הבר (ברוחב שורת ה-estimated) ----
         val barLeft = padL
-        val barRight = line1Right
+        val barRight = W - padL
         val barTop = 134f
         val barBottom = 180f
         val barWidth = barRight - barLeft
