@@ -11,14 +11,14 @@ import java.text.NumberFormat
 import java.util.Locale
 
 /**
- * מצייר את תוכן הווידג'ט כתמונה אחת (bitmap) — 3 שורות, רקע שחור.
- * רוחב הבר מתאים לרוחב השורה הראשונה. רוחב הקנבס מחושב לפי התוכן.
+ * מצייר את תוכן הווידג'ט כתמונה אחת (bitmap) — 4 שורות, רקע שחור.
+ * רוחב הבר מתאים לרוחב שורת ה-"estimated". רוחב הקנבס מחושב לפי התוכן.
  */
 object WidgetRenderer {
 
     private const val FONT = 26f                 // גודל טקסט אחיד לכל השורות
     private const val HEART = 20f                // גודל הלב (מעט קטן מהטקסט)
-    private const val H = 168                     // גובה קבוע
+    private const val H = 206                     // גובה קבוע
 
     private val numberFormat = NumberFormat.getInstance(Locale("he", "IL"))
 
@@ -36,13 +36,14 @@ object WidgetRenderer {
         val padL = 28f
         val spaceW = white.measureText(" ")   // רוחב רווח אחד
 
-        // מדידת השורה הראשונה: "estimated" + רווח + לב + רווח + "left:"
+        // מדידת שורת ה-"estimated": "estimated" + רווח + לב + רווח + "left:"
         val wEstimated = white.measureText("estimated")
         val wLeft = white.measureText("left:")
         val line1Right = padL + wEstimated + spaceW + HEART + spaceW + wLeft
 
-        // רוחב הקנבס = תוכן + שוליים
-        val W = Math.ceil((line1Right + padL).toDouble()).toInt()
+        // רוחב הקנבס = השורה הרחבה ביותר (הכותרת או שורת ה-estimated) + שוליים
+        val titleRight = padL + white.measureText("you are going to die")
+        val W = Math.ceil((Math.max(line1Right, titleRight) + padL).toDouble()).toInt()
 
         val bmp = Bitmap.createBitmap(W, H, Bitmap.Config.ARGB_8888)
         val c = Canvas(bmp)
@@ -51,8 +52,12 @@ object WidgetRenderer {
         val bg = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.BLACK }
         c.drawRoundRect(RectF(0f, 0f, W.toFloat(), H.toFloat()), 24f, 24f, bg)
 
-        // ---- שורה 1 ----
+        // ---- שורה 0: הכותרת ----
         var y = 40f
+        c.drawText("you are going to die", padL, y, whiteBold)
+
+        // ---- שורה 1 ----
+        y = 78f
         var x = padL
         c.drawText("estimated", x, y, white)
         x += wEstimated + spaceW
@@ -61,14 +66,14 @@ object WidgetRenderer {
         c.drawText("left:", x, y, white)
 
         // ---- שורה 2: מספר הפעימות ----
-        y = 78f
+        y = 116f
         c.drawText(numberFormat.format(r.heartsLeft), padL, y, whiteBold)
 
-        // ---- שורה 3: הבר (ברוחב השורה הראשונה) ----
+        // ---- שורה 3: הבר (ברוחב שורת ה-estimated) ----
         val barLeft = padL
         val barRight = line1Right
-        val barTop = 96f
-        val barBottom = 142f
+        val barTop = 134f
+        val barBottom = 180f
         val barWidth = barRight - barLeft
 
         val pctLeft = r.pctLeft.coerceIn(0.0, 100.0)
