@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- דרוש כדי להריץ שירות שמעדכן את הווידג'ט כל שנייה -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!-- דרוש מ-Android 13 ומעלה כדי להציג את ההתראה של השירות -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.HeartbeatWidget">
+
+        <!-- מסך פתיחה קטן עם הוראות (נקודת כניסה נוחה להוסיף בעתיד מסך הגדרות) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- הווידג'ט עצמו -->
+        <receiver
+            android:name=".HeartbeatWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/heartbeat_widget_info" />
+        </receiver>
+
+        <!-- השירות שמריץ את הטיקר של השנייה, פעיל רק כשהמסך דולק -->
+        <service
+            android:name=".HeartbeatService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="live_countdown_widget" />
+        </service>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:lineSpacingExtra="6dp"
+        android:text="Heartbeat Widget\n\nכדי להוסיף את הווידג'ט:\n1. לחיצה ארוכה על מסך הבית\n2. בחירת \u2018ווידג\u2019טים\u2019 (Widgets)\n3. מציאת Heartbeat Widget וגרירה למסך\n\nהמונה מתעדכן כל שנייה כשהמסך דולק, ונעצר כשהמסך כבוי כדי לחסוך סוללה.\n\nכדי לשנות תאריך לידה, דופק או תוחלת חיים \u2014 ערוך את הקובץ HeartbeatCalc.kt." />
+
+</ScrollView>
