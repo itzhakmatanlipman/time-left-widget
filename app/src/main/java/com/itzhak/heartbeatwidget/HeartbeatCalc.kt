@@ -16,7 +16,7 @@ object HeartbeatCalc {
     const val BIRTH_MINUTE = 0
 
     const val BPM = 61.0                 // דופק ממוצע לדקה
-    const val LIFE_EXPECTANCY_YEARS = 86  // תוחלת חיים בשנים
+    const val LIFE_EXPECTANCY_YEARS = 88  // תוחלת חיים בשנים
     // -----------------
 
     data class Result(
